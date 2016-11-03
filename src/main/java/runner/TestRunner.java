@@ -9,7 +9,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		tags = {"@test01"},
+		tags = {"@test02"},
 		features = {"src/test/java/features"},
 		glue = {"stepDefinition"}
 		)
