@@ -1,5 +1,6 @@
 package stepDefinition;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
@@ -16,146 +17,150 @@ import pages.KlockiaPage;
 
 public class ElemCheckJsOnSteps {
 
-	DriverHelper driver = new DriverHelper();
-	KlockiaPage klockiaPage = new KlockiaPage();
-	FacebookPage facebookPage = new FacebookPage();
-	String homepage;
-	String currentWindow;
-	String facebookWindow;
-	String backgroundColor;
-	String browser = System.getProperty("browser");
-	String js = System.getProperty("js");
+    DriverHelper driver = new DriverHelper();
+    KlockiaPage klockiaPage = new KlockiaPage();
+    FacebookPage facebookPage = new FacebookPage();
+    String homepage;
+    String currentWindow;
+    String facebookWindow;
+    String backgroundColor;
+    String padding;
+    String browser = System.getProperty("browser");
+    String js = System.getProperty("js");
 
-	@Given("^I go to http://www\\.klockia\\.se/$")
-	public void i_go_to_http_www_klockia_se() throws Throwable {
-		driver.goToPage("http://www.klockia.se/");
-	}
+    @Given("^I go to http://www\\.klockia\\.se/$")
+    public void i_go_to_http_www_klockia_se() throws Throwable {
+        driver.goToPage("http://www.klockia.se/");
+    }
 
-	@When("^I click on “KLOCKOR” button$")
-	public void i_click_on_KLOCKOR_button() throws Throwable {
-		if (js.equalsIgnoreCase("on")) {
-			driver.waitForElementPresent(klockiaPage.klockor);
-			driver.clickElement(driver.findElement(klockiaPage.klockor));
-		} else if (js.equalsIgnoreCase("off")) {
-			driver.findElement(klockiaPage.klockor).click();
-		} else {
-			throw new RuntimeException("Please specify propery js on/off");
-		}
-	}
+    @When("^I click on “KLOCKOR” button$")
+    public void i_click_on_KLOCKOR_button() throws Throwable {
+        if (js.equalsIgnoreCase("on")) {
+            driver.waitForElementPresent(klockiaPage.klockor);
+            driver.clickElement(driver.findElement(klockiaPage.klockor));
+        } else if (js.equalsIgnoreCase("off")) {
+            driver.findElement(klockiaPage.klockor).click();
+        } else {
+            throw new RuntimeException("Please specify propery js on/off");
+        }
+    }
 
-	@When("^mousover on “Calvin Klein City Chrono” watch$")
-	public void mousover_on_Calvin_Klein_City_Chrono_watch() throws Throwable {
-		driver.scrollDown(450);
-		driver.waitForElementPresent(klockiaPage.watchCalvinKlein);
-		driver.hoverOverElement(driver.findElement(klockiaPage.watchCalvinKlein));
-	}
+    @When("^mousover on “Calvin Klein City Chrono” watch$")
+    public void mousover_on_Calvin_Klein_City_Chrono_watch() throws Throwable {
+        driver.scrollDown(450);
+        driver.waitForElementPresent(klockiaPage.watchCalvinKlein);
+        driver.hoverOverElement(driver.findElement(klockiaPage.watchCalvinKlein));
+    }
 
-	@Then("^I validate that “KÖP” background color is equal to \"([^\"]*)\"$")
-	public void i_validate_that_KÖP_background_color_is_equal_to_f_b(String color) throws Throwable {
-		if (js.equalsIgnoreCase("on")) {
-			driver.waitForElementPresent(klockiaPage.buyButton);
-			backgroundColor = driver.getRgbToHexColor(klockiaPage.buyButton, "background-color");
-		} else if (js.equalsIgnoreCase("off")) {
-			backgroundColor = driver.getRgbToHexColor(klockiaPage.calvinKleinBuyButtonNoJsColor, "background-color");
-		} else {
-			throw new RuntimeException("Please specify propery js on/off");
-		}
-		assertTrue(backgroundColor.equals(color));
-	}
+    @Then("^I validate that “KÖP” background color is equal to \"([^\"]*)\"$")
+    public void i_validate_that_KÖP_background_color_is_equal_to_f_b(String color) throws Throwable {
+        if (js.equalsIgnoreCase("on")) {
+            driver.waitForElementPresent(klockiaPage.buyButton);
+            backgroundColor = driver.getRgbToHexColor(klockiaPage.buyButton, "background-color");
+        } else if (js.equalsIgnoreCase("off")) {
+            backgroundColor = driver.getRgbToHexColor(klockiaPage.calvinKleinBuyButtonNoJsColor, "background-color");
+        } else {
+            throw new RuntimeException("Please specify propery js on/off");
+        }
+        assertTrue(backgroundColor.equals(color));
+    }
 
-	@Then("^“LÄS MER” background color is equal to \"([^\"]*)\"$")
-	public void läs_MER_background_color_is_equal_to(String color) throws Throwable {
-		driver.waitForElementPresent(klockiaPage.readMoreButton);
-		driver.hoverOverElement(driver.findElement(klockiaPage.readMoreButton));
-		String backgroundColor = driver.getRgbToHexColor(klockiaPage.readMoreButton, "color");
-		assertTrue(backgroundColor.equals(color));
-	}
+    @Then("^“LÄS MER” background color is equal to \"([^\"]*)\"$")
+    public void läs_MER_background_color_is_equal_to(String color) throws Throwable {
+        driver.waitForElementPresent(klockiaPage.readMoreButton);
+        driver.hoverOverElement(driver.findElement(klockiaPage.readMoreButton));
+        String backgroundColor = driver.getRgbToHexColor(klockiaPage.readMoreButton, "color");
+        assertTrue(backgroundColor.equals(color));
+    }
 
-	@Then("^padding of elements is equal to \"([^\"]*)\"$")
-	public void padding_of_elements_is_equal_to_px(String value) throws Throwable {
-		if (js.equalsIgnoreCase("on")) {
-			driver.waitForElementPresent(klockiaPage.buyButton);
-			String padding = driver.getCssAttributeValue(klockiaPage.buyButton, "padding-top");
-			assertTrue(padding.equals(value));
-		} else if (js.equalsIgnoreCase("off")) {
-			String padding = driver.getCssAttributeValue(klockiaPage.calvinKleinBuyButtonNoJsColor, "padding-right");
-			assertTrue(padding.equals(value));
-		} else {
-			throw new RuntimeException("Please specify propery js on/off");
-		}
+    @Then("^padding of elements is equal to \"([^\"]*)\"$")
+    public void padding_of_elements_is_equal_to_px(String value) throws Throwable {
+        if (js.equalsIgnoreCase("on")) {
+            driver.waitForElementPresent(klockiaPage.buyButton);
+            padding = driver.getCssAttributeValue(klockiaPage.buyButton, "padding-top");
+        } else if (js.equalsIgnoreCase("off")) {
+            padding = driver.getCssAttributeValue(klockiaPage.calvinKleinBuyButtonNoJsColor, "padding-right");
+        } else {
+            throw new RuntimeException("Please specify propery js on/off");
+        }
+        assertTrue(padding.equals(value));
+    }
 
-	}
+    @When("^I click on \"([^\"]*)\" watch$")
+    public void i_click_on_Marc_By_Marc_Jacobs_Baker_watch(String name) throws Throwable {
+        driver.scrollDown(450);
+        if (name.equalsIgnoreCase("Marc By Marc Jacobs Baker")) {
+            driver.waitForElementPresent(klockiaPage.watchMarkJacobs);
+            driver.clickElement(driver.findElement(klockiaPage.watchMarkJacobsHovered));
+        } else if (name.equalsIgnoreCase("Calvin Klein City Chrono")) {
+            driver.waitForElementPresent(klockiaPage.watchCalvinKleinNoJs);
+            driver.findElement(klockiaPage.watchCalvinKleinNoJs).click();
+        } else {
+            throw new RuntimeException("Incorrect watch name");
+        }
+    }
 
-	@When("^I click on \"([^\"]*)\" watch$")
-	public void i_click_on_Marc_By_Marc_Jacobs_Baker_watch(String name) throws Throwable {
-		driver.scrollDown(450);
-		if (name.equalsIgnoreCase("Marc By Marc Jacobs Baker")) {
-			driver.waitForElementPresent(klockiaPage.watchMarkJacobs);
-			driver.clickElement(driver.findElement(klockiaPage.watchMarkJacobsHovered));
-		} else if (name.equalsIgnoreCase("Calvin Klein City Chrono")) {
-			driver.waitForElementPresent(klockiaPage.watchCalvinKleinNoJs);
-			driver.findElement(klockiaPage.watchCalvinKleinNoJs).click();
-		} else {
-			throw new RuntimeException("Incorrect watch name");
-		}
-	}
+    @When("^on the new opened window click on Facebook logo$")
+    public void on_the_new_opened_window_click_on_Facebook_logo() throws Throwable {
+        homepage = driver.getWindowHandle();
+        driver.waitForElementPresent(klockiaPage.facebookLogo);
+        driver.clickElement(driver.findElement(klockiaPage.facebookLogo));
+    }
 
-	@When("^on the new opened window click on Facebook logo$")
-	public void on_the_new_opened_window_click_on_Facebook_logo() throws Throwable {
-		homepage = driver.getWindowHandle();
-		driver.waitForElementPresent(klockiaPage.facebookLogo);
-		driver.clickElement(driver.findElement(klockiaPage.facebookLogo));
-	}
+    @When("^I log in with my facebook account$")
+    public void i_log_in_with_my_facebook_account() throws Throwable {
+        Set<String> windows = driver.getWindowHandles();
+        Iterator iterator = windows.iterator();
 
-	@When("^I log in with my facebook account$")
-	public void i_log_in_with_my_facebook_account() throws Throwable {
-		Set<String> windows = driver.getWindowHandles();
-		Iterator iterator = windows.iterator();
+        while (iterator.hasNext()) {
+            currentWindow = iterator.next().toString();
+            if (!currentWindow.equals(homepage)) {
+                driver.switchTo().window(currentWindow);
+                facebookWindow = driver.getWindowHandle();
+                driver.waitForElementPresent(facebookPage.Email);
+                driver.findElement(facebookPage.Email).sendKeys("mytestingemail@inbox.lv");
+                driver.findElement(facebookPage.Password).sendKeys("Test151");
+                driver.clickElement(driver.findElement(facebookPage.LoginButton));
+            }
+        }
+    }
 
-		while (iterator.hasNext()) {
-			currentWindow = iterator.next().toString();
-			if (!currentWindow.equals(homepage)) {
-				driver.switchTo().window(currentWindow);
-				facebookWindow = driver.getWindowHandle();
-				driver.waitForElementPresent(facebookPage.Email);
-				driver.findElement(facebookPage.Email).sendKeys("mytestingemail@inbox.lv");
-				driver.findElement(facebookPage.Password).sendKeys("Test151");
-				driver.clickElement(driver.findElement(facebookPage.LoginButton));
-			}
-		}
-	}
+    @Then("^close Facebook window$")
+    public void close_Facebook_window() throws Throwable {
+        driver.waitForElementPresent(facebookPage.Close);
+        driver.clickElement(driver.findElement(facebookPage.Close));
+    }
 
-	@Then("^close Facebook window$")
-	public void close_Facebook_window() throws Throwable {
-		driver.waitForElementPresent(facebookPage.Close);
-		driver.clickElement(driver.findElement(facebookPage.Close));
-	}
+    @Then("^press on “Stay” and validate that Facebook page is visible$")
+    public void press_on_Stay_and_validate_that_Facebook_page_is_visible() throws Throwable {
+        if (browser.equalsIgnoreCase("phantomjs")) {
+            driver.dismissAlert();
+        } else {
+            Alert alert = driver.switchTo().alert();
+            alert.dismiss();
+        }
+        currentWindow = driver.getWindowHandle();
+        assertTrue(currentWindow.equals(facebookWindow));
+    }
 
-	@Then("^press on “Stay” and validate that Facebook page is visible$")
-	public void press_on_Stay_and_validate_that_Facebook_page_is_visible() throws Throwable {
-		if (browser.equalsIgnoreCase("phantomjs")) {
-			driver.dismissAlert();
-		} else {
-			Alert alert = driver.switchTo().alert();
-			alert.dismiss();
-		}
-		currentWindow = driver.getWindowHandle();
-		assertTrue(currentWindow.equals(facebookWindow));
-	}
-
-	@Then("^press on “Leave” and validate that Facebook page is not visible$")
-	public void press_on_Leave_and_validate_that_Facebook_page_is_not_visible() throws Throwable {
-		driver.waitForElementPresent(facebookPage.Close);
-		driver.clickElement(driver.findElement(facebookPage.Close));
-		if (browser.equalsIgnoreCase("phantomjs")) {
-			driver.acceptAlert();
-		} else {
-			Alert alert = driver.switchTo().alert();
-			alert.accept();
-		}
-		driver.switchTo().window(homepage);
-		currentWindow = driver.getWindowHandle();
-		assertTrue(currentWindow.equals(homepage));
-	}
+    @Then("^press on “Leave” and validate that Facebook page is not visible$")
+    public void press_on_Leave_and_validate_that_Facebook_page_is_not_visible() throws Throwable {
+        driver.waitForElementPresent(facebookPage.Close);
+        driver.clickElement(driver.findElement(facebookPage.Close));
+        if (browser.equalsIgnoreCase("phantomjs")) {
+            driver.acceptAlert();
+        } else {
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+        }
+        driver.switchTo().window(homepage);
+        currentWindow = driver.getWindowHandle();
+        assertTrue(currentWindow.equals(homepage));
+    }
+    
+    @Then("^Facebook, Twitter logo is missing$")
+    public void facebook_Twitter_logo_is_missing() throws Throwable {
+        assertFalse(driver.isElementPresent(klockiaPage.facebookLogo));
+    }
 
 }
