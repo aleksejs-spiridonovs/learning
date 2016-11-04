@@ -1,5 +1,6 @@
 package stepDefinition;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
@@ -23,6 +24,7 @@ public class ElemCheckJsOnSteps {
     String currentWindow;
     String facebookWindow;
     String backgroundColor;
+    String padding;
     String browser = System.getProperty("browser");
     String js = System.getProperty("js");
 
@@ -75,15 +77,13 @@ public class ElemCheckJsOnSteps {
     public void padding_of_elements_is_equal_to_px(String value) throws Throwable {
         if (js.equalsIgnoreCase("on")) {
             driver.waitForElementPresent(klockiaPage.buyButton);
-            String padding = driver.getCssAttributeValue(klockiaPage.buyButton, "padding-top");
-            assertTrue(padding.equals(value));
+            padding = driver.getCssAttributeValue(klockiaPage.buyButton, "padding-top");
         } else if (js.equalsIgnoreCase("off")) {
-            String padding = driver.getCssAttributeValue(klockiaPage.calvinKleinBuyButtonNoJsColor, "padding-right");
-            assertTrue(padding.equals(value));
+            padding = driver.getCssAttributeValue(klockiaPage.calvinKleinBuyButtonNoJsColor, "padding-right");
         } else {
             throw new RuntimeException("Please specify propery js on/off");
         }
-
+        assertTrue(padding.equals(value));
     }
 
     @When("^I click on \"([^\"]*)\" watch$")
@@ -156,6 +156,11 @@ public class ElemCheckJsOnSteps {
         driver.switchTo().window(homepage);
         currentWindow = driver.getWindowHandle();
         assertTrue(currentWindow.equals(homepage));
+    }
+    
+    @Then("^Facebook, Twitter logo is missing$")
+    public void facebook_Twitter_logo_is_missing() throws Throwable {
+        assertFalse(driver.isElementPresent(klockiaPage.facebookLogo));
     }
 
 }
