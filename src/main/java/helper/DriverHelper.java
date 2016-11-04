@@ -23,54 +23,48 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-//import org.openqa.selenium.Alert;
 
 public class DriverHelper implements WebDriver {
 
 	public static WebDriver driver;
 	private final static WebDriverWait wait;
-    public static final String browser = System.getProperty("browser");
-    public static final String js = System.getProperty("js");
-    
+	public static final String browser = System.getProperty("browser");
+	public static final String js = System.getProperty("js");
+
 	public DriverHelper() {
 
 	}
 
 	static {
 		if (browser.equalsIgnoreCase("firefox")) {
-			if(js.equalsIgnoreCase("on")){
+			if (js.equalsIgnoreCase("on")) {
 				driver = new FirefoxDriver();
-			}else if(js.equalsIgnoreCase("off")){
+			} else if (js.equalsIgnoreCase("off")) {
 				FirefoxProfile profile = new FirefoxProfile();
-		    	profile.setPreference("javascript.enabled", false);
-		    	driver = new FirefoxDriver(profile);
-			}else{
+				profile.setPreference("javascript.enabled", false);
+				driver = new FirefoxDriver(profile);
+			} else {
 				throw new RuntimeException("Please specify propery js on/off");
 			}
-	    }
-		else if (browser.equalsIgnoreCase("chrome")) {
-	        System.setProperty("webdriver.chrome.driver", "C:\\Users\\arturs.kucinskis\\Downloads\\chromedriver_win32(1)\\chromedriver.exe");
-	        if(js.equalsIgnoreCase("on")){
-	        	driver = new ChromeDriver();
-	        }else if(js.equalsIgnoreCase("off")){
-	        	driver = new ChromeDriver();
-		        driver.navigate().to("chrome://settings-frame/content");
-	            driver.findElement(By.xpath("//input[@type='radio' and @name='javascript' and @value='block']")).click();
-	            driver.findElement(By.id("content-settings-overlay-confirm")).click();
-	        }else{
-	        	throw new RuntimeException("Please specify propery js on/off");
-	        }
-	    }
-		else if (browser.equalsIgnoreCase("phantomJS")) {     
-	        System.setProperty("phantomjs.binary.path","C:\\Users\\arturs.kucinskis\\Downloads\\phantomjs-2.1.1-windows\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
-            driver = new PhantomJSDriver();
-	    }  
-	    else {
-	        throw new RuntimeException("I don't think I should have made it here...");
-	    }
-		
+		} else if (browser.equalsIgnoreCase("chrome")) {
+			System.setProperty("webdriver.chrome.driver",
+					"C:\\Users\\arturs.kucinskis\\Downloads\\chromedriver_win32(1)\\chromedriver.exe");
+			driver = new ChromeDriver();
+			if (js.equalsIgnoreCase("off")) {
+				driver.navigate().to("chrome://settings-frame/content");
+				driver.findElement(By.xpath("//input[@type='radio' and @name='javascript' and @value='block']"))
+						.click();
+				driver.findElement(By.id("content-settings-overlay-confirm")).click();
+			}
+		} else if (browser.equalsIgnoreCase("phantomJS")) {
+			System.setProperty("phantomjs.binary.path",
+					"C:\\Users\\arturs.kucinskis\\Downloads\\phantomjs-2.1.1-windows\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
+			driver = new PhantomJSDriver();
+		} else {
+			throw new RuntimeException("I don't think I should have made it here...");
+		}
+
 		driver.manage().window().maximize();
-		
 		wait = (WebDriverWait) new WebDriverWait(driver, 60).ignoring(StaleElementReferenceException.class);
 
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -229,9 +223,9 @@ public class DriverHelper implements WebDriver {
 	public void scrollDown() {
 		((JavascriptExecutor) driver).executeScript("scroll(0,250);");
 	}
-	
+
 	public void scrollDown(int pixels) {
-		((JavascriptExecutor) driver).executeScript("scroll(0,"+pixels+");");
+		((JavascriptExecutor) driver).executeScript("scroll(0," + pixels + ");");
 	}
 
 	public void scrollTo(WebElement element) {
@@ -241,17 +235,11 @@ public class DriverHelper implements WebDriver {
 	public void clearLocalStorage() {
 		((JavascriptExecutor) driver).executeScript("localStorage.clear()");
 	}
-	
-	public void clickElement(WebElement element){
-		
+
+	public void clickElement(WebElement element) {
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-//		((JavascriptExecutor)driver).executeScript("document.getElementsById().click();");
 	}
-	
-	public void clickElementNoJs(By element){
-		driver.findElement(element).click();
-	}
-	
+
 	public void hoverOverElement(WebElement element) {
 		Actions action = new Actions(driver);
 		action.moveToElement(element);
@@ -274,25 +262,26 @@ public class DriverHelper implements WebDriver {
 	public void typeText(String value, String text) {
 		driver.findElement(By.id(value)).sendKeys(text);
 	}
-	
-	public String getRgbToHexColor(By element, String colorAttribute){ 
-		 String color = driver.findElement(element).getCssValue(colorAttribute).trim();  		  
-		 String color1[];  
-		 color1 = color.replace("rgba(", "").split(",");       
-		 String hex = String.format("#%02x%02x%02x", Integer.parseInt(color1[0].trim()), Integer.parseInt(color1[1].trim()), Integer.parseInt(color1[2].trim()));    
-		 return hex;
+
+	public String getRgbToHexColor(By element, String colorAttribute) {
+		String color = driver.findElement(element).getCssValue(colorAttribute).trim();
+		String color1[];
+		color1 = color.replace("rgba(", "").split(",");
+		String hex = String.format("#%02x%02x%02x", Integer.parseInt(color1[0].trim()),
+				Integer.parseInt(color1[1].trim()), Integer.parseInt(color1[2].trim()));
+		return hex;
 	}
-	
+
 	public String getCssAttributeValue(By element, String attribute) {
 		String value = driver.findElement(element).getCssValue(attribute);
 		return value;
 	}
-	
+
 	public void acceptAlert() {
 		((JavascriptExecutor) driver).executeScript("window.alert = function(){}");
 		((JavascriptExecutor) driver).executeScript("window.confirm = function(){return true;}");
 	}
-	
+
 	public void dismissAlert() {
 		((JavascriptExecutor) driver).executeScript("window.alert = function(){}");
 		((JavascriptExecutor) driver).executeScript("window.confirm = function(){return false;}");
