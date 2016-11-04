@@ -8,13 +8,13 @@ import pages.KlockiaPage;
 
 public class ElemCheckJsOffSteps {
 
-	DriverHelper driver = new DriverHelper();
-	KlockiaPage klockiaPage = new KlockiaPage();
-	FacebookPage facebookPage = new FacebookPage();
+    DriverHelper driver = new DriverHelper();
+    KlockiaPage klockiaPage = new KlockiaPage();
+    FacebookPage facebookPage = new FacebookPage();
 
-	@Then("^Facebook, Twitter logo is missing$")
-	public void facebook_Twitter_logo_is_missing() throws Throwable {
-		assertFalse(driver.isElementPresent(klockiaPage.facebookLogo));
-	}
+    @Then("^Facebook, Twitter logo is missing$")
+    public void facebook_Twitter_logo_is_missing() throws Throwable {
+        assertFalse(driver.isElementPresent(klockiaPage.facebookLogo));
+    }
 
 }
