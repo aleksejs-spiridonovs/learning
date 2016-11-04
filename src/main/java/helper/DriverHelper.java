@@ -47,13 +47,11 @@ public class DriverHelper implements WebDriver {
 				throw new RuntimeException("Please specify propery js on/off");
 			}
 		} else if (browser.equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver",
-					"C:\\Users\\arturs.kucinskis\\Downloads\\chromedriver_win32(1)\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver","C:\\Users\\arturs.kucinskis\\Downloads\\chromedriver_win32(1)\\chromedriver.exe");
 			driver = new ChromeDriver();
 			if (js.equalsIgnoreCase("off")) {
 				driver.navigate().to("chrome://settings-frame/content");
-				driver.findElement(By.xpath("//input[@type='radio' and @name='javascript' and @value='block']"))
-						.click();
+				driver.findElement(By.xpath("//input[@type='radio' and @name='javascript' and @value='block']")).click();
 				driver.findElement(By.id("content-settings-overlay-confirm")).click();
 			}
 		} else if (browser.equalsIgnoreCase("phantomJS")) {
@@ -251,7 +249,6 @@ public class DriverHelper implements WebDriver {
 	}
 
 	public String getSelectedDropdownOption(WebElement dropdown) {
-		// Select selectedDropdown = new Select(dropdown);
 		return new Select(dropdown).getFirstSelectedOption().getText();
 	}
 
@@ -268,7 +265,7 @@ public class DriverHelper implements WebDriver {
 		String color1[];
 		color1 = color.replace("rgba(", "").split(",");
 		String hex = String.format("#%02x%02x%02x", Integer.parseInt(color1[0].trim()),
-				Integer.parseInt(color1[1].trim()), Integer.parseInt(color1[2].trim()));
+		Integer.parseInt(color1[1].trim()), Integer.parseInt(color1[2].trim()));
 		return hex;
 	}
 
